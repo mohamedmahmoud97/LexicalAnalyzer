@@ -2,15 +2,7 @@ class StateNode:
     nodesCount = 0
     nodesDictionary = {}
 
-    def __init__(self):
-        self.label = self.nodesCount
-        self.input = ''
-        self.nodesDictionary[self.nodesCount] = self
-        self.nodesCount = self.nodesCount + 1  # here there is a counter on the nodes
-        self.next = []  # here the node will have a list of next nodes
-        self.isAccepted = False
-
-    def __init__(self, input):
+    def __init__(self, input=''):
         self.label = self.nodesCount
         self.input = input
         self.nodesDictionary[self.nodesCount] = self
