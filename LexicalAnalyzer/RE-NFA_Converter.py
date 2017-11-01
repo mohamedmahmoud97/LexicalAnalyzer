@@ -8,6 +8,7 @@ def convertRE(rule):
     if (rule[0] == '['):  # if first char is [ so it's punctuation
         for char in range(1, len(rule)):
             print(currentState)
+            print("Heyeyeyyeyeyeyeyyeye")
             if (rule[char] != '' and rule[char] != '\\' and rule[char] != ']' and
                         rule[char].isalpha() == False):
                 currentState = StateNode()
