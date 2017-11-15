@@ -112,5 +112,3 @@ startState, fStates, sStates = (
 )
 
 minimizeDFA(startState, fStates, sStates)
-
-print("hey yoh")
