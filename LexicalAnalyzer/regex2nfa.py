@@ -221,8 +221,8 @@ def process(regex):
             i += 1
             continue
         else:
-            print "Error in parse at " + regex[i:]
-            print "                  ^"
+            print ("Error in parse at " + regex[i:])
+            print ("                  ^")
             return
     push(nfas, operands, " ")
     return nfas[0]

@@ -98,6 +98,8 @@ def nfa2dfa(nfa, start_state, accept_list):
        for sym in symbol_set:
             u = eclosure(nfa, move(nfa, state_list[ntv], sym))
             dest_id = -1
+            if u == set([None]):
+                continue;
             if u not in state_list.values():
                 accept_subset = []
                 for x in u:
@@ -109,10 +111,11 @@ def nfa2dfa(nfa, start_state, accept_list):
                     dest_id = counter
                     counter += 1
                 else:
-                    name = most_important(accept_subset, accept_list)
+                    name = most_important(accept_subset, accept_list) + str(counter)
                     state_list[name] = u
                     visit_list.append(name)
                     dest_id = name
+                    counter += 1 
                 
             else:
                 dest_id = [k for k in state_list.keys() if state_list[k] == u][0]
