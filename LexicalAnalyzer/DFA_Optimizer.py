@@ -1,3 +1,7 @@
+def automagical_sort(nfa):
+    for key in nfa.keys():
+        nfa[key].sort(key = lambda x: x[1])
+
 def minimizeDFA(startState, F, S):
     partitionII = []
     S_ = []
