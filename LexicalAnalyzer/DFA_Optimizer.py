@@ -21,11 +21,11 @@ def minimizeDFA(startState, F, S):
     partitionII.append(S_)
     print(partitionII)
     # Here we will make a while loop to get the new partition after partitioning process and iterating on all G group in each partition
-    print(len(inputs), "<-inputs")
-    partitionIInew = []
+    print(len(inputs), "<- inputs")
     while (True):
-        print(partitionII, "<----should be shit here bardo")
-        print(partitionIInew, "<----should be shit here bardo")
+        partitionIInew = []
+        # print(partitionII, "<----should be shit here bardo")
+        # print(partitionIInew, "<----should be shit here bardo")
         tempList = []
         print(len(partitionII), "<- Partition Length")
         # Here we will iterate on each G group in the partition
@@ -78,7 +78,7 @@ def minimizeDFA(startState, F, S):
         else:
             partitionII = partitionIInew
             print(partitionII, "<-- Now partitionII is like this")
-            partitionIInew.clear()
+            # partitionIInew.clear()
 
     # Here we create the dictionary for all states to identify each representative
     repDict = {}
@@ -93,16 +93,14 @@ def minimizeDFA(startState, F, S):
     # Now we should replace each state with its representative in the dict S the old one which contains all the states
     for x in S:
         for y in S.get(x):
-            print(S.get(x), "<--Sex", y)
             outputX, inputX = S.get(x, y)
-            print(outputX, "OutX", inputX, "InX")
             repState = repDict.get(outputX)
             lst = list(S.get(x,y))
             lst[0] = repState
             lst[1] = inputX
             S.get(x)[y] = tuple(lst)
             # X= tuple(lst)
-            print(X, "<------TUPLE")
+            print(S.get(x)[y], "<------TUPLE")
     return S
 
 
