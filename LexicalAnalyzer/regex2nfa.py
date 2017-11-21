@@ -1,12 +1,13 @@
 regex = """
+keywords: {if else while}
+datatype: {bool int float}
 letter = [a-zA-Z]
 digit = [0-9]
+digits = digit+
 id: letter(letter|digit)*
-datatype: {bool int float}
-num: digit+ |(digit+ \. digits (\L | E digits))
+num: digit+ |(digit+ \. digits (\L | (E digits)))
 relop: (\=\=) | (\!\=) | (\>) | (\>\=) | (\<) | (\<\=)
 assign: \=
-keywords: {if else while}
 punct: [\;\,\(\)\{\}]
 addop:\+ | \-
 mulop: \* | \/
@@ -57,19 +58,23 @@ def get_patterns(regex):
     lines = filter(None, [line for line in regex.split("\n")])
     rep_list = {}
     patterns = {}
+    ordered_end_states = []
     for line in lines:
         t = linetype(line)
         if t == "ERR":
             print("Error in get_pattenrs")
             return
         if t == "END":
+            ordered_end_states.append(line[:line.find(":")].strip())
             patterns[line[:line.find(":")].strip()] = handle_curly_brackets(line[line.find(":") + 1:].strip())
         else:
             rep_list[line[:line.find("=")].strip()] = handle_curly_brackets(line[line.find("=") + 1:].strip())
-    for key, value in rep_list.items():
+    l = list(rep_list.keys())
+    l.sort(key=len, reverse=True)
+    for key in l:
         for key2 in patterns.keys():
-            patterns[key2] = patterns[key2].replace(key, "(" + value + ")")
-    return patterns
+            patterns[key2] = patterns[key2].replace(key, "(" + rep_list[key] + ")")
+    return ordered_end_states, patterns
 
 def process_single(character):
     start = new_state()
@@ -251,11 +256,12 @@ def regex2nfa(regex):
     i = 0
     import pdb
     #pdb.set_trace()
-    patterns = get_patterns(regex)
+    end, patterns = get_patterns(regex)
     nfas = {}
     for token in patterns.keys():
         nfas[token] = process(patterns[token])
         rename_state(nfas[token][2], nfas[token][1], token)
         nfas[token] = (nfas[token][0], token, nfas[token][2])
-    return merge_nfas(nfas)
+    a,b,c = merge_nfas(nfas)
+    return a,end,c
 #regex2nfa(regex)

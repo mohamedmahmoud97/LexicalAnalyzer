@@ -76,11 +76,11 @@ def get_all_syms(nfa):
 
 def most_important(items, real):
     minimum = len(real)
-    i = None
-    for item in items:
-        if real.index(item) < minimum:
-            minimum = real.index(item)
-            i = item
+    item = None
+    for i in items:
+        if real.index(i) < minimum:
+            minimum = real.index(i)
+            item = i
     return item
 def nfa2dfa(nfa, start_state, accept_list):
     import pdb
