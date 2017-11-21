@@ -13,8 +13,8 @@ def minimizeDFA(startState, F, S):
         if S.__getitem__(x) not in inputs:
             inputs.append(S.__getitem__(x))
             print(S.__getitem__(x))
-    print(len(S))
-    print(inputs, "<-- inputs")
+    #print(len(S))
+    #print(inputs, "<-- inputs")
     # This will put non-accepting states in a list called S_ skipping the first state '0'
     for x in iter(S):
         if x not in F:  # if the state not in the F states so add it to S-F states
@@ -23,27 +23,27 @@ def minimizeDFA(startState, F, S):
     # We will make an initial partition with two groups of accepting states F and non-accepting states S_
     partitionII.append(F)
     partitionII.append(S_)
-    print(partitionII)
+    #print(partitionII)
     # Here we will make a while loop to get the new partition after partitioning process and iterating on all G group in each partition
-    print(len(inputs), "<- inputs")
+    #print(len(inputs), "<- inputs")
     while (True):
         partitionIInew = []
         # print(partitionII, "<----should be shit here bardo")
         # print(partitionIInew, "<----should be shit here bardo")
         tempList = []
-        print(len(partitionII), "<- Partition Length")
+        #print(len(partitionII), "<- Partition Length")
         # Here we will iterate on each G group in the partition
         for x in range(len(partitionII)):
             G = partitionII[x]
             G_ = []
-            print(x, "<- Group No.")
-            print(len(G), "<- Group Length\\", G, "<- Group Content")
+            #print(x, "<- Group No.")
+            #print(len(G), "<- Group Length\\", G, "<- Group Content")
 
             # Here we will iterate on each state in G with all the inputs to compare state s and t, where s is G[0] and t is G[y]
             if len(G) == 1:
                 G_.append(G[0])
                 partitionIInew.append(G_)
-                print("Break")
+                #print("Break")
                 continue  # if the G group has only one state so break from this loop
 
             for y in iter(G):  # Here we will iterate on states in G
@@ -53,7 +53,7 @@ def minimizeDFA(startState, F, S):
 
                     outputX, inputX = S.get(G[0])[z]  # to get the input and output of each input z in s
                     outputY, inputY = S.get(G[y])[z]  # to get the input and output of each input z in t
-                    print("X:", outputX, "Y:", outputY)
+                    #print("X:", outputX, "Y:", outputY)
                     if outputX != outputY and (outputY not in G):
                         # tempList.append(y)
                         # print(tempList , "<-- TempList")
@@ -67,21 +67,21 @@ def minimizeDFA(startState, F, S):
                 else:
                     tempList.append(y)
 
-                print(G_, "<-- New Group_")
+                #print(G_, "<-- New Group_")
 
             partitionIInew.append(G_)  # add list G_ to partitionIInew
-            print(partitionIInew, "<-- New Partition")
+            #print(partitionIInew, "<-- New Partition")
 
         # we want to put the tempList in the partitionIInew at last step
         partitionIInew.append(tempList)
-        print(partitionIInew, "<-- Now PartitionIInew is like this")
+        #print(partitionIInew, "<-- Now PartitionIInew is like this")
 
         if partitionIInew == partitionII:
             partitionII = partitionIInew
             break
         else:
             partitionII = partitionIInew
-            print(partitionII, "<-- Now partitionII is like this")
+            #print(partitionII, "<-- Now partitionII is like this")
             # partitionIInew.clear()
 
     # Here we create the dictionary for all states to identify each representative
@@ -104,7 +104,7 @@ def minimizeDFA(startState, F, S):
             lst[1] = inputX
             S.get(x)[y] = tuple(lst)
             # X= tuple(lst)
-            print(S.get(x)[y], "<------TUPLE")
+            #print(S.get(x)[y], "<------TUPLE")
     return S
 
 

@@ -83,8 +83,8 @@ def most_important(items, real):
             item = i
     return item
 def nfa2dfa(nfa, start_state, accept_list):
-    import pdb
-    pdb.set_trace()
+    #import pdb
+    #pdb.set_trace()
     symbol_set = get_all_syms(nfa)
     state_list = {}
     counter = 1
