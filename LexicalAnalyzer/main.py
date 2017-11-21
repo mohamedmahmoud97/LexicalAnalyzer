@@ -1,4 +1,4 @@
-#from DFA_Optimizer import *
+from DFA_Optimizer import *
 from nfa2dfa import *
 from visualize import *
 from regex2nfa import *
@@ -9,7 +9,8 @@ f = raw_input("Grammer file Name: ")
 grammer = open(f).read()
 nfa_start, nfa_end, nfa = regex2nfa(grammer)
 dfa_start, dfa_end, dfa = nfa2dfa(nfa, nfa_start, nfa_end)
-#dfa_start_min, dfa_end_min, dfa_min = minimizeDFA(dfa, dfa_end, dfa_start)
+automagical_sort(dfa)
+dfa_start_min, dfa_end_min, dfa_min = minimizeDFA(dfa, dfa_end, dfa_start)
 f = raw_input("Code file name:")
 code = open(f).read()
 token_list = simulate(dfa, dfa_start, dfa_end, code)

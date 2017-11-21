@@ -55,7 +55,6 @@ def move(nfa, T, a):
     return ret
 
 def eclosure(nfa, states):
-    
     x = states
     while True:
         s = move(nfa, x, None)
