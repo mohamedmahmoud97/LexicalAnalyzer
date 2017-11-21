@@ -24,8 +24,8 @@ def minimizeDFA(startState, F, S):
     print(len(inputs), "<- inputs")
     while (True):
         partitionIInew = []
-        # print(partitionII, "<----should be shit here bardo")
-        # print(partitionIInew, "<----should be shit here bardo")
+        print(partitionII, "<----should be shit here bardo")
+        print(partitionIInew, "<----should be shit here bardo")
         tempList = []
         print(len(partitionII), "<- Partition Length")
         # Here we will iterate on each G group in the partition
@@ -41,6 +41,34 @@ def minimizeDFA(startState, F, S):
                 partitionIInew.append(G_)
                 print("Break")
                 continue  # if the G group has only one state so break from this loop
+
+            if len(G) == 2:
+                # Here we will iterate on states in G
+                isDistinguishable = False
+                for z in range(len(inputs) - 1):  # Here we will iterate on all inputs of
+
+                    outputX, inputX = S.get(G[0])[z]  # to get the input and output of each input z in s
+                    outputY, inputY = S.get(G[1])[z]  # to get the input and output of each input z in t
+                    print("X:", outputX, "Y:", outputY)
+                    if outputX != outputY and (outputY not in G):
+                        # tempList.append(y)
+                        # print(tempList , "<-- TempList")
+                        isDistinguishable = True
+                        # elif (y not in G_):
+                        #    G_.append(
+                        #        y)  # if it's not distinguishable so add it to G_ which will be added to partitionIInew
+
+                if (isDistinguishable == False):
+                    G_.append(G[0])
+                    G_.append(G[1])
+                else:
+                    G_.append(G[0])
+                    tempList.append(G[1])
+
+                print(G_, "<-- New Group_")
+                partitionIInew.append(G_)  # add list G_ to partitionIInew
+                print(partitionIInew, "<-- New Partition")
+                continue
 
             for y in iter(G):  # Here we will iterate on states in G
 
@@ -69,8 +97,10 @@ def minimizeDFA(startState, F, S):
             print(partitionIInew, "<-- New Partition")
 
         # we want to put the tempList in the partitionIInew at last step
-        partitionIInew.append(tempList)
+        if len(tempList) != 0:
+            partitionIInew.append(tempList)
         print(partitionIInew, "<-- Now PartitionIInew is like this")
+        print(partitionII, "<-- Now partitionII")
 
         if partitionIInew == partitionII:
             partitionII = partitionIInew
@@ -85,23 +115,39 @@ def minimizeDFA(startState, F, S):
 
     for x in range(len(partitionII)):
         if len(partitionII[x]) < 2:
+            print(partitionII[x], "partition[x]")
             repDict.update({partitionII[x][0]: partitionII[x][0]})
         else:
-            for y in iter(partitionII[x]):
+            print(partitionII[x])
+            for y in range(len(partitionII[x])):
                 repDict.update({partitionII[x][y]: partitionII[x][0]})
 
+    print(repDict, "<===#####  repDict")
     # Now we should replace each state with its representative in the dict S the old one which contains all the states
-    for x in S:
-        for y in S.get(x):
-            outputX, inputX = S.get(x, y)
+    for x in range(len(S)):
+        for y in range(len(S.get(x))):
+            outputX, inputX = S.get(x)[y]
             repState = repDict.get(outputX)
-            lst = list(S.get(x,y))
-            lst[0] = repState
-            lst[1] = inputX
-            S.get(x)[y] = tuple(lst)
+            print(outputX, "   ", inputX, "######")
+            print(repState, "###State")
+            S[x][y] = (repState, inputX)
+            # lst = list(S.get(x,y))
+            # lst[0] = repState
+            # lst[1] = inputX
+            # S.get(x)[y] = tuple(lst)
             # X= tuple(lst)
-            print(S.get(x)[y], "<------TUPLE")
+            print(S[x][y], "<------TUPLE")
+
+    for x in range(len(S) - 1):
+        if repDict.get(x) != x:
+            del S[x]
+
+    print(S)
     return S
+
+
+def check():
+    return
 
 
 startStates, fStates, sStates = (
@@ -136,4 +182,3 @@ startStates, fStates, sStates = (
 
 minimizeDFA(startStates, fStates, sStates)
 print("##### End #####")
-#print(sStates)
