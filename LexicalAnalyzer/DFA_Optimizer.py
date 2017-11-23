@@ -1,7 +1,75 @@
+import copy
+def count_states(dfa):
+    s = set()
+    for key in dfa.keys():
+        s.add(key)
+        for i,v in dfa[key]:
+            s.add(i)
+    return len(s)
 def automagical_sort(nfa):
     for key in nfa.keys():
         nfa[key].sort(key = lambda x: x[1])
-
+def dead_state_elimination(dfa_copy, start, end_list_copy):
+    #return start, end_list_copy, dfa_copy
+    dfa = copy.deepcopy(dfa_copy)
+    end_list = copy.deepcopy(end_list_copy)
+    automagical_sort(dfa)
+    Optimization = True
+    import pdb
+    #pdb.set_trace()
+    delete_set = set()
+    for k1 in dfa.keys():
+        for k2 in dfa.keys():
+            if k1 not in dfa.keys() or k2 not in dfa.keys():
+                continue
+            if k1 in delete_set or k2 in delete_set:
+                continue
+            if k1 == k2:
+                continue
+            if (k1 not in end_list and k2 not in end_list) or (k1 in end_list and k2 in end_list):
+                if ''.join([j for j in str(k1) if not j.isdigit()]) != ''.join([j for j in str(k2) if not j.isdigit()]):
+                    continue;
+            if len(dfa[k1]) != len(dfa[k2]):
+                continue
+            i = 0
+            fail = False
+            while i < len(dfa[k1]):
+                if dfa[k1][i] != dfa[k2][i]:
+                    fail = True
+                    break
+                i+= 1
+            if fail:
+                continue;
+            original = None
+            todelete = None
+            if k2 not in end_list:
+                original = k1
+                todelete = k2
+            elif k1 not in end_list:
+                original = k2
+                todelete = k2
+            else:
+                if end_list.index(k2) < end_list.index(k1):
+                    original = k2
+                    todelete =k1
+                else:
+                    original = k1
+                    todelete = k2
+                end_list.remove(todelete)
+            if original == None or todelete == None:
+                pdb.set_trace()
+            if start == todelete:
+                start = original
+            delete_set.add(todelete)
+            #del dfa[todelete]
+            for k in dfa.keys():
+                for i in range(len(dfa[k])):
+                    a,b = dfa[k][i]
+                    if a == todelete:
+                        dfa[k][i] = original, b
+    for element in delete_set:
+        del dfa[element]
+    return start, end_list, dfa
 def minimizeDFA(startState, F, S):
     partitionII = []
     S_ = []
@@ -148,41 +216,3 @@ def minimizeDFA(startState, F, S):
 
     #print(S)
     return S
-
-
-def check():
-    return
-
-
-startStates, fStates, sStates = (
-    0
-    ,
-    [
-        4
-    ]
-    ,
-    {0: [
-        (1, 'a'),
-        (2, 'b')
-    ],
-        1: [
-            (1, 'a'),
-            (3, 'b')
-        ],
-        2: [
-            (1, 'a'),
-            (2, 'b')
-        ],
-        3: [
-            (1, 'a'),
-            (4, 'b')
-        ],
-        4: [
-            (1, 'a'),
-            (2, 'b')
-        ]
-    }
-)
-
-minimizeDFA(startStates, fStates, sStates)
-#print("##### End #####")

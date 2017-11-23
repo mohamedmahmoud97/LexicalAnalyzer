@@ -81,6 +81,22 @@ def most_important(items, real):
             minimum = real.index(i)
             item = i
     return item
+def ordered_insert(accept_list, state, old_accept_list):
+    if len(accept_list) == 0:
+        accept_list.append(state)
+        return
+    old_state = ''.join([i for i in state if not i.isdigit()])
+    i = 0
+    done = False
+    while i < len(accept_list) and not done:
+        current_state = ''.join([j for j in accept_list[i] if not j.isdigit()])
+        if old_accept_list.index(current_state) > old_accept_list.index(old_state):
+            accept_list.insert(i, state)
+            done = True
+        i += 1
+    if not done:
+        accept_list.append(state)
+
 def nfa2dfa(nfa, start_state, accept_list):
     #import pdb
     #pdb.set_trace()
@@ -122,8 +138,10 @@ def nfa2dfa(nfa, start_state, accept_list):
                 dfa[ntv] = []
             dfa[ntv].append((dest_id, sym))
 
-    acs = set()
+    acs = []
+    #import pdb
+    #pdb.set_trace()
     for k in state_list.keys():
         if len(state_list[k].intersection(set(accept_list))) != 0:
-            acs.add(k)
+            ordered_insert(acs, k, accept_list)
     return [k for k in state_list.keys() if state_list[k] == ss][0], acs, dfa
