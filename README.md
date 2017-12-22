@@ -1,6 +1,6 @@
 # Compiler Lexical Analyzer Generator
 
-####It's a the first phase in the front end of the compiler.
+#### It's a the first phase in the front end of the compiler.
 
 - There are two input files, one for the grammar rules and one for the source code.
 - The output is a list of tokens which matches the user's input file.
@@ -12,7 +12,7 @@
 
 ```
 [uname@hostname JavaCompiler]$ python LexicalAnalyzer/__main__.py
-Grammar fileName: lexicalAnalyzer/grammar.lex
+Grammar file name: LexicalAnalyzer/grammar.lex
 Code file name: LexicalAnalyzer/code.c
 ```
 
